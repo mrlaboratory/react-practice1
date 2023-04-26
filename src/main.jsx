@@ -10,6 +10,7 @@ import Signup from './pages/Signup.jsx'
 import Signin from './pages/Signin.jsx'
 import Dashboard from './pages/Dashboard.jsx'
 import Authprovider from './pages/Authprovider.jsx'
+import PrivateRoute from './PrivateRoute.jsx'
 
 const router = createBrowserRouter([
   {
@@ -39,7 +40,7 @@ const router = createBrowserRouter([
       },
       {
         path:'/dashboard',
-        element : <Dashboard></Dashboard>
+        element : <PrivateRoute><Dashboard></Dashboard></PrivateRoute>
       }
     ]
   }

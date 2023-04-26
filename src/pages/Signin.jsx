@@ -1,16 +1,42 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
-
+import { AuthContext } from './Authprovider';
+import {  Navigate, useLocation, useNavigate } from 'react-router-dom';
 const Signin = () => {
+  const {userSignIn} = useContext(AuthContext)
     const [error,setError] = useState()
   const [success,setSuccess] = useState('')
 
+
+  const location = useLocation()
+  const navigate = useNavigate()
+
+
+
+  const from = location?.state?.from?.pathname || '/'
+
+
 const signInUser = (e) => {
+  setError('')
+  setSuccess('')
   e.preventDefault()
   const form = e.target 
-  const name = form.name.value 
   const email = form.email.value 
-  console.log(name,email)
+  const password = form.password.value 
+  console.log(email,password)
+ 
+  userSignIn(email,password)
+  .then(res => {
+    setSuccess('successfully logged')
+    form.reset()
+    console.log(from)
+  navigate(from)
+  
+  })
+  .catch(e=> {
+    setError(e.message)
+  })
+  
 
 }
     return (
@@ -33,7 +59,7 @@ const signInUser = (e) => {
           <label className="label">
             <span className="label-text">Password</span>
           </label>
-          <input required type="text" name="password" placeholder="Your password" className="input input-bordered" />
+          <input required type="password" name="password" placeholder="Your password" className="input input-bordered" />
           <label className="label">
             {
               error ?  <h2 className='text-red-500 font-bold'>{error}</h2> : ''
